@@ -14,7 +14,7 @@
 <meta property="og:description" content="Cholesky分解对于有着特殊性质的矩阵，在这里我们考虑对称正定阵，我们可以设计一些奇妙的算法来对他进行分解 1234567891011def cholesky_factorization(A):              # Cholesky分解，使用直接法减少计算量，得到的下三角矩阵L进行了本地化存储    if len(A) !&#x3D; len(A[0]):        raise Value">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-03-29T06:50:02.000Z">
-<meta property="article:modified_time" content="2025-03-29T07:31:34.912Z">
+<meta property="article:modified_time" content="2025-03-29T07:33:44.924Z">
 <meta property="article:author" content="Cathedral&#39;s GHOST">
 <meta name="twitter:card" content="summary">
   
@@ -102,10 +102,10 @@
         <h1 id="Cholesky分解"><a href="#Cholesky分解" class="headerlink" title="Cholesky分解"></a>Cholesky分解</h1><p>对于有着特殊性质的矩阵，在这里我们考虑<strong>对称正定阵</strong>，我们可以设计一些奇妙的算法来对他进行分解</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cholesky_factorization</span>(<span class="params">A</span>):              <span class="comment"># Cholesky分解，使用直接法减少计算量，得到的下三角矩阵L进行了本地化存储</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(A) != <span class="built_in">len</span>(A[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;A is not a square matrix!&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> col_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A[<span class="number">0</span>])):</span><br><span class="line">        A[col_num][col_num] = math.sqrt(A[col_num][col_num])    <span class="comment"># 对角线元素</span></span><br><span class="line">        <span class="keyword">for</span> row_num <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):    </span><br><span class="line">            A[row_num][col_num] /= A[col_num][col_num]          <span class="comment"># 该列的下三角部分，计算后直接原地储存</span></span><br><span class="line">        <span class="keyword">for</span> col_num_2 <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A[<span class="number">0</span>])):           <span class="comment"># 修改右下角剩余矩阵元素的值，提前减去求和中的一项，减少重复计算</span></span><br><span class="line">            <span class="keyword">for</span> row_num_2 <span class="keyword">in</span> <span class="built_in">range</span>(col_num, <span class="built_in">len</span>(A)):</span><br><span class="line">                A[row_num_2][col_num_2] -= A[row_num_2][col_num]*A[col_num_2][col_num] </span><br><span class="line">    <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
 <h2 id="Cholesky分解的定理及证明"><a href="#Cholesky分解的定理及证明" class="headerlink" title="Cholesky分解的定理及证明"></a>Cholesky分解的定理及证明</h2><h3 id="定理：Cholesky分解定理"><a href="#定理：Cholesky分解定理" class="headerlink" title="定理：Cholesky分解定理"></a>定理：Cholesky分解定理</h3><p>设 ( A ) 是一个 ( n \times n ) 的对称正定矩阵，则存在一个唯一的下三角矩阵 ( L ) 使得：</p>
-<p>[<br>A &#x3D; L L^T<br>]</p>
+<p>$$<br>A &#x3D; L L^T<br>$$</p>
 <p>其中，( L ) 是一个下三角矩阵，其对角线上的元素均为正实数。</p>
 <h3 id="证明："><a href="#证明：" class="headerlink" title="证明："></a>证明：</h3><p>证明分为两部分：存在性和唯一性。</p>
-<h4 id="存在性："><a href="#存在性：" class="headerlink" title="存在性："></a>存在性：</h4><p>由于矩阵 ( A ) 是对称正定的，我们知道它的所有特征值都是正实数。根据正定矩阵的性质，存在一个下三角矩阵 ( L )，使得 ( A &#x3D; L L^T )。这一结果是 Cholesky 分解的基本结论。</p>
+<h4 id="存在性："><a href="#存在性：" class="headerlink" title="存在性："></a>存在性：</h4><p>由于矩阵 ( A ) 是对称正定的，我们知道它的所有特征值都是正实数。根据正定矩阵的性质，存在一个下三角矩阵 ( L )，使得$A &#x3D; L L^T$。这一结果是 Cholesky 分解的基本结论。</p>
 <h4 id="唯一性："><a href="#唯一性：" class="headerlink" title="唯一性："></a>唯一性：</h4><p>设 ( L_1 ) 和 ( L_2 ) 都是满足 ( A &#x3D; L_1 L_1^T ) 和 ( A &#x3D; L_2 L_2^T ) 的下三角矩阵。如果我们假设 ( L_1 \neq L_2 )，则根据矩阵的正定性，矩阵 ( A ) 的每一行的元素都是由对应的下三角矩阵的元素线性组合得到的。通过计算可以得出，只有当 ( L_1 &#x3D; L_2 ) 时，矩阵 ( A ) 的分解是唯一的。</p>
 <p>因此，Cholesky分解是唯一的。</p>
 <h1 id="LDLt分解"><a href="#LDLt分解" class="headerlink" title="LDLt分解"></a>LDLt分解</h1><p>注意到上面的算法在每次迭代时需对主元进行开方操作，而在矩阵的条件数较大且矩阵本身规模较大时，可能会出现<br>由于计算过程中的舍入误差，导致中间出现了负数列主元，从而导致算法失败。</p>
@@ -114,7 +114,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/29/test/" data-id="cm8tw7tsj0001xcuf1egq4yjw" data-title="Matrix Factorization(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/29/test/" data-id="cm8twapx20001kcuf9kwfc371" data-title="Matrix Factorization(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
