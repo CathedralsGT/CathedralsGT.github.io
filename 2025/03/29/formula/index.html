@@ -22,7 +22,7 @@
 
   
 
-  <title>Cholesky Factorization | CGT&#39;s Wonderland</title>
+  <title>formula.md | CGT&#39;s Wonderland</title>
 
   
 
@@ -103,17 +103,15 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Cholesky Factorization</h1>
+          <h1 class="title-wrap">formula.md</h1>
           <h2 class="title-sub-wrap">
             <strong>Cathedral&#39;s GHOST</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2025-03-29T06:50:02.000Z" itemprop="datePublished">2025-03-29</time>
+            <time  class="article-date" datetime="2025-03-29T14:56:11.000Z" itemprop="datePublished">2025-03-29</time>
           </h2>
           
           
           <ul class="wrap-list dark">
-  
-    <li><a href="/categories/Matrix-Factorization/">📒 Matrix Factorization</a></li>
   
 </ul>
           <ul class="wrap-list dark">
@@ -140,40 +138,23 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="Cholesky分解"><a href="#Cholesky分解" class="headerlink" title="Cholesky分解"></a>Cholesky分解</h1><p>对于有着特殊性质的矩阵，在这里我们考虑<strong>对称正定阵</strong>，我们可以设计一些奇妙的算法来对他进行分解</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cholesky_factorization</span>(<span class="params">A</span>):              <span class="comment"># Cholesky分解，使用直接法减少计算量，得到的下三角矩阵L进行了本地化存储</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(A) != <span class="built_in">len</span>(A[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;A is not a square matrix!&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> col_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A[<span class="number">0</span>])):</span><br><span class="line">        A[col_num][col_num] = math.sqrt(A[col_num][col_num])    <span class="comment"># 对角线元素</span></span><br><span class="line">        <span class="keyword">for</span> row_num <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):    </span><br><span class="line">            A[row_num][col_num] /= A[col_num][col_num]          <span class="comment"># 该列的下三角部分，计算后直接原地储存</span></span><br><span class="line">        <span class="keyword">for</span> col_num_2 <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A[<span class="number">0</span>])):           <span class="comment"># 修改右下角剩余矩阵元素的值，提前减去求和中的一项，减少重复计算</span></span><br><span class="line">            <span class="keyword">for</span> row_num_2 <span class="keyword">in</span> <span class="built_in">range</span>(col_num, <span class="built_in">len</span>(A)):</span><br><span class="line">                A[row_num_2][col_num_2] -= A[row_num_2][col_num]*A[col_num_2][col_num] </span><br><span class="line">    <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
+        <p>a formula:<br>$$<br>\int_{0}^{\infty} e^{-x^2} dx &#x3D; \frac{\sqrt{\pi}}{2}<br>$$</p>
+<p>Inline formula: (E &#x3D; mc^2)</p>
 
-<h1 id="LDLt分解"><a href="#LDLt分解" class="headerlink" title="LDLt分解"></a>LDLt分解</h1><p>注意到上面的算法在每次迭代时需对主元进行开方操作，而在矩阵的条件数较大且矩阵本身规模较大时，可能会出现<br>由于计算过程中的舍入误差，导致中间出现了负数列主元，从而导致算法失败。</p>
-<p>为此，我们可以对Cholesky分解进行改进：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">LDLt</span>(<span class="params">A</span>):                <span class="comment"># 改进后的Cholesky分解，L中除主对角线外元素存储在初始矩阵的对应位置，对角线位置用于存放D中的元素</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(A) != <span class="built_in">len</span>(A[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;A is not a square matrix!&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> col_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A[<span class="number">0</span>])):</span><br><span class="line">        <span class="keyword">for</span> col_num_2 <span class="keyword">in</span> <span class="built_in">range</span>(col_num):</span><br><span class="line">            s = A[col_num_2][col_num_2]*A[col_num][col_num_2]</span><br><span class="line">            A[col_num][col_num] -= A[col_num][col_num_2]*s</span><br><span class="line">            <span class="keyword">for</span> row_num <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">                A[row_num][col_num] -= A[row_num][col_num_2]*s</span><br><span class="line">        <span class="keyword">for</span> row_num <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">            A[row_num][col_num] /= A[col_num][col_num]</span><br><span class="line">    <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
       </section>
 
       
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2025/03/29/formula/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">formula.md</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2025/03/29/Numerical-Linear-Algebra/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Gaussian Elimination(A=LU)</h2>
+        <a href="/2025/03/29/test/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Cholesky Factorization</h2>
         </a>
       
       <div class="card-text--row">Older</div>
