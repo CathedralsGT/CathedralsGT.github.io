@@ -114,7 +114,7 @@
           
             <h2 class="last-time">
               <span>最后更新于</span>
-              <time  class="article-updated" datetime="2025-04-18T05:23:06.382Z" itemprop="dateUpdated">2025-04-17</time>
+              <time  class="article-updated" datetime="2025-04-18T05:55:19.799Z" itemprop="dateUpdated">2025-04-17</time>
             </h2>
           
           
@@ -153,6 +153,9 @@
 <h1 id="LDLt分解"><a href="#LDLt分解" class="headerlink" title="LDLt分解"></a>LDLt分解</h1><p>注意到上面的算法在每次迭代时需对主元进行开方操作，而在矩阵的条件数较大且矩阵本身规模较大时，可能会出现<br>由于计算过程中的舍入误差，导致中间出现了负数列主元，从而导致算法失败。</p>
 <p>为此，我们可以对Cholesky分解进行改进：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">LDLt</span>(<span class="params">A</span>):                <span class="comment"># 改进后的Cholesky分解，L中除主对角线外元素存储在初始矩阵的对应位置，对角线位置用于存放D中的元素</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(A) != <span class="built_in">len</span>(A[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;A is not a square matrix!&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> col_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A[<span class="number">0</span>])):</span><br><span class="line">        <span class="keyword">for</span> col_num_2 <span class="keyword">in</span> <span class="built_in">range</span>(col_num):</span><br><span class="line">            s = A[col_num_2][col_num_2]*A[col_num][col_num_2]</span><br><span class="line">            A[col_num][col_num] -= A[col_num][col_num_2]*s</span><br><span class="line">            <span class="keyword">for</span> row_num <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">                A[row_num][col_num] -= A[row_num][col_num_2]*s</span><br><span class="line">        <span class="keyword">for</span> row_num <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">            A[row_num][col_num] /= A[col_num][col_num]</span><br><span class="line">    <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
+
+<p>test post update</p>
+
       </section>
 
       
