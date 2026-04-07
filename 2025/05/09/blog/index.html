@@ -22,7 +22,7 @@
 
   
 
-  <title>Gaussian Elimination(A=LU) | CGT&#39;s Wonderland</title>
+  <title>blog | CGT&#39;s Wonderland</title>
 
   
 
@@ -105,17 +105,15 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Gaussian Elimination(A=LU)</h1>
+          <h1 class="title-wrap">blog</h1>
           <h2 class="title-sub-wrap">
             <strong>Cathedral&#39;s GHOST</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2025-03-29T06:30:00.000Z" itemprop="datePublished">2025-03-29</time>
+            <time  class="article-date" datetime="2025-05-09T06:17:55.000Z" itemprop="datePublished">2025-05-09</time>
           </h2>
           
           
           <ul class="wrap-list dark">
-  
-    <li><a href="/categories/Matrix-Factorization/">📒 Matrix Factorization</a></li>
   
 </ul>
           <ul class="wrap-list dark">
@@ -142,9 +140,39 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="LU分解"><a href="#LU分解" class="headerlink" title="LU分解"></a>LU分解</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gaussian_elimination</span>(<span class="params">A</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(A) != <span class="built_in">len</span>(A[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;A is not a square matrix!&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">            A[j][i] /= A[i][i]</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">                A[j][k] -= A[i][k] * A[j][i]</span><br><span class="line">    <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
-<p>运行这段代码会完成对<strong>A=LU</strong>的分解，下三角阵L（除主对角线外）的元素储存在A的对应位置，上三角阵U同理。</p>
-<h1 id="列主元Gauss"><a href="#列主元Gauss" class="headerlink" title="列主元Gauss"></a>列主元Gauss</h1><p>这是一段改进的Gauss分解，通过选取列主元来保证L中元素绝对值小于等于1：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">col_major_gaussian</span>(<span class="params">A</span>):</span><br><span class="line">    index = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A))]</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(A) != <span class="built_in">len</span>(A[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;A is not a square matrix!&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> col_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A)):</span><br><span class="line">        major = <span class="built_in">abs</span>(A[col_num][col_num])</span><br><span class="line">        index[col_num] = col_num</span><br><span class="line">        <span class="keyword">for</span> row_num <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">abs</span>(A[row_num][col_num]) &gt; major:</span><br><span class="line">                major = <span class="built_in">abs</span>(A[row_num][col_num])</span><br><span class="line">                index[col_num] = row_num</span><br><span class="line">        <span class="keyword">if</span> index[col_num] != col_num:</span><br><span class="line">            B = [<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(col_num, <span class="built_in">len</span>(A))]</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(col_num, <span class="built_in">len</span>(A)):</span><br><span class="line">                B[k-col_num] = A[col_num][k]</span><br><span class="line">                A[col_num][k] = A[index[col_num]][k]</span><br><span class="line">                A[index[col_num]][k] = B[k-col_num]</span><br><span class="line">        <span class="keyword">for</span> row_num <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">            A[row_num][col_num] /= A[col_num][col_num]</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(col_num+<span class="number">1</span>, <span class="built_in">len</span>(A)):</span><br><span class="line">                A[row_num][k] -= A[col_num][k] * A[row_num][col_num]</span><br><span class="line">    <span class="keyword">for</span> col_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(A)-<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> index[col_num] != col_num:</span><br><span class="line">                    B = [<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(col_num)]</span><br><span class="line">                    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(col_num):</span><br><span class="line">                        B[k] = A[col_num][k]</span><br><span class="line">                        A[col_num][k] = A[index[col_num]][k]</span><br><span class="line">                        A[index[col_num]][k] = B[k]    </span><br><span class="line">    <span class="keyword">return</span> A, index       </span><br></pre></td></tr></table></figure></p>
+        <h1 id="Key-Technical-Pathways"><a href="#Key-Technical-Pathways" class="headerlink" title="Key Technical Pathways"></a>Key Technical Pathways</h1><h2 id="Large-Language-Models-LLMs"><a href="#Large-Language-Models-LLMs" class="headerlink" title="Large Language Models(LLMs)"></a>Large Language Models(LLMs)</h2><p>​    LLM-based assistants (e.g. OpenAI Codex, Meta CodeLlama, DeepMind AlphaCode) use <strong>transformer</strong> architectures pretrained on massive code/NL corpora. In <a target="_blank" rel="noopener" href="https://alphacode.deepmind.com/">AlphaCode website</a>, you will see the code generation process visually.</p>
+<ul>
+<li><strong>Technical Rationale</strong>：The models learn coding conventions and syntax by predicting next tokens over billions of lines of source code. For example, Codex was further trained on ≈159 GB of public GitHub code, and Code Llama on hundreds of billions of code tokens. This self-supervised learning of syntax and semantics enables handling of code’s long-range dependencies and multi-language tokens. For instance, the transformer’s multi-head attention can track matching braces, variable definitions, etc., across thousands of tokens . The same architecture can learn natural and programming languages in one model, making it easy to bootstrap general LLMs (e.g. GPT-4) on code.</li>
+<li><strong>Application</strong>：These LLMs can take a natural-language description or partial code as input and generate functional code or explain existing code. They can also translate code between languages and even answer questions about code. Developers use LLMs for text-to-code generation (turning requirements into code), code completion (filling in functions or bodies), code explanation (commenting or summarizing code), and code translation (porting code between languages).</li>
+<li><strong>Strengths</strong>：LLMs support many languages and APIs at once, since they see vast multilingual code data. They are highly context-aware (handling long input windows up to 16K+ tokens ) and can rapidly prototype entire functions from specs. Their transformer backbone allows massive parallel training, yielding rich code/linguistic patterns.</li>
+<li><strong>Challenges</strong>：LLMs can hallucinate (produce plausible-but-incorrect code) and may “fill in” code that looks syntactically valid but is wrong logically. They also struggle with domain-specialized tasks if not fine-tuned – for highly niche languages or APIs they may underperform . Because training data comes from public code, there are privacy and licensing concerns: proprietary or sensitive code could inadvertently influence outputs . Finally, large LLMs require heavy compute (cloud inference) and can be slow or costly, and their huge parameter counts mean they can “leak” verbatim snippets of training code under some prompts.</li>
+</ul>
+<h2 id="Code-Completion-Tools-Embedded-in-IDEs"><a href="#Code-Completion-Tools-Embedded-in-IDEs" class="headerlink" title="Code Completion Tools Embedded in IDEs"></a>Code Completion Tools Embedded in IDEs</h2><p>​    Dedicated code-completion assistants are designed for real-time authoring within editors. They typically use smaller or specialized models and focus on the <strong>local context</strong> (the current file or project) to ensure <strong>low latency</strong> and seamless integration.</p>
+<ul>
+<li><strong>Technical Rationale</strong>：These assistants trade off model size for speed. They often use models distilled or trained specifically for code, and can rely on context windows of only the current file or function. Because they run in or near the IDE, they employ caching and incremental inference. By focusing o syntax and local context, these tools can ensure completions are syntactically correct and relevant.</li>
+<li><strong>Application</strong>：For example, Tabnine began as a local ML model and now uses a hybrid local/cloud architecture: it runs a lightweight model on the developer’s machine and can optionally query a larger cloud model for complex completions . Amazon’s CodeWhisperer plugs into IDEs and continuously suggests code based on the current and recent lines of code or comments . These tools are trained on large corpora of source code so that inference can be done efficiently. Because the models are generally smaller or optimized, they can produce suggestions in split-second time , making them feel instantaneous in the IDE.</li>
+<li><strong>Strength</strong>：IDE tools are highly responsive and customizable. Enterprises can self-host models or fine-tune on private codebases. Because the model scope is narrower, it often produces fewer hallucinations: suggestions come directly from patterns seen in the codebase. The autocomplete interface is integrated with the editor’s UI (variable scoping, syntax checking, etc.), making the experience seamless.</li>
+<li><strong>Challenges</strong>：Completion tools have limited understanding of developer intent beyond the immediate context. They may not capture high-level goals expressed in comments and cannot easily perform complex transformations. Their predictions can be rigid: often completing the most common pattern rather than inventing new solutions. Because of the focus on local context, they may struggle with tasks spanning multiple modules or architectural reasoning. In sum, they sacrifice some flexibility and creativity for speed and privacy.</li>
+</ul>
+<h2 id="Structured-or-Symbolic-Code-Generation-Models"><a href="#Structured-or-Symbolic-Code-Generation-Models" class="headerlink" title="Structured or Symbolic Code Generation Models"></a>Structured or Symbolic Code Generation Models</h2><p>​    This category includes models that explicitly leverage code’s syntax and structure, typically by generating or using <strong>Abstract Syntax Trees (ASTs)</strong> and grammar rules. Rather than treating code as a flat token sequence, these approaches constrain generation to follow the language’s syntax.</p>
+<ul>
+<li><strong>Technical Rationale</strong>：Programming languages have formal grammars and tree structure, unlike free-form text. By modeling this structure, one can enforce <strong>well-formedness</strong>. Tree-LSTMs or tree-based attention allow the model to pass information along the AST hierarchy (parent/child relationships). This explicit structure modeling helps the model understand scopes, typing, and control flow more reliably than token-only models. It can also reduce the search space by filtering out syntactically impossible outputs.</li>
+<li><strong>Application</strong>：For example, syntax-driven neural models (e.g. Phontron et al. 2017) use a grammar model that only allows production rules in the AST, ensuring the output is always well-formed . Similarly, Tree-based Transformers (like TreeGen) incorporate an AST encoder to capture tree structure and long-range dependencies. In practice, these models might generate trees node-by-node (or sequences of grammar actions) instead of plain text, which inherently guarantees syntactic validity.</li>
+<li><strong>Strength</strong>：The main advantage is structural correctness: generated programs are guaranteed to compile (barring semantic errors). This is crucial in syntax-heavy scenarios. By design, such models avoid many basic bugs (unclosed blocks, wrong syntax). They capture hierarchical relations explicitly, which can improve semantic coherence in localized code segments. In benchmarks, tree-based models have outperformed vanilla seq2seq on tasks like code generation from description.</li>
+<li><strong>Challenges</strong>：These models tend to be inflexible and complex. Encoding grammar and ASTs makes training and inference more intricate. Each new language requires engineering a grammar decoder. They also often cannot leverage raw text data as easily. As a result, such models are usually used in hybrid systems (combining LLMs with symbolic rules) rather than standalone. They may handle generic code generation poorly if the task isn’t well-covered by the grammar. In short, they trade generality for precision and are harder to scale to large, mixed datasets.</li>
+</ul>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Abstract_syntax_tree_for_Euclidean_algorithm.svg" alt="AST Example"></p>
+<center>AST Example for a simple Python Euclidean algorithm</center>
+
+
+
+<h2 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h2><ul>
+<li><strong>Context vs. Speed</strong>： LLMs can ingest large contexts (thousands of lines) but need powerful GPUs, whereas completion tools use short context windows (current file) to remain instantaneous . </li>
+<li><strong>Generality vs. Precision</strong>： General LLMs can handle open-ended prompts (natural language, comments) , while structured models precisely handle only what the grammar allows .</li>
+<li><strong>Privacy vs. Capability</strong>： Local IDE assistants (Tabnine) keep code on-premises , enhancing privacy, but forgo some knowledge gained from massive corpora. Cloud LLMs have seen more data but raise compliance concerns .</li>
+<li><strong>Strengths vs. Weaknesses</strong>： LLMs are the most flexible but are prone to hallucinations and require oversight . IDE completions are efficient and integration-friendly but less creative. Structured models produce the most reliable (well-formed) code but at the expense of adaptability.</li>
+</ul>
+<p>Overall, modern tools often blend these approaches.</p>
 
       </section>
 
@@ -157,8 +185,8 @@
     
     <div class="card-text">
       
-        <a href="/2025/03/29/Gaussian_Elimination/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Cholesky Factorization</h2>
+        <a href="/2025/05/10/blog2/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">blog2</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -166,6 +194,20 @@
   </article>
 </div>
           
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2025/04/27/essay/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">和GPT的聊天(1)</h2>
+        </a>
+      
+      <div class="card-text--row">Older</div>
+    </div>
+  </article>
+</div>
           
         </nav>
       
